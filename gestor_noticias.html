@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activa El Turismo | Gestor de Noticias</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .news-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .news-table th, .news-table td { padding: 12px 10px; border-bottom: 1px solid #ddd; text-align: left; }
+        .dark-mode .news-table th, .dark-mode .news-table td { border-bottom: 1px solid #444; }
+        .action-btn { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; margin-right: 5px; transition: background-color 0.2s; }
+        .btn-edit { background-color: #f59e0b; color: white; }
+        .btn-edit:hover { background-color: #d97706; }
+        .btn-delete { background-color: #ef4444; color: white; }
+        .btn-delete:hover { background-color: #dc2626; }
+        #edit-modal { display: none; margin-top: 30px; }
+        .gestor-container { max-width: 1000px; margin: 0 auto; }
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="logo-container">
+                <a href="index.html" class="logo-link">
+                    <img src="img/Logo ActivaelTurismo.png" alt="Activa el Turismo logo" class="site-logo">
+                </a>
+                <a href="index.html" class="logo-link site-title-link">Activa El Turismo <br> Difundiendo el alma de la
+                    Región de Antofagasta.</a>
+            </div>
+
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="index.html" class="nav-link">Inicio</a>
+                <a href="noticias.html" class="nav-link">Noticias</a>
+                <a href="#" class="nav-link">Destinos</a>
+                <a href="videos.html" class="nav-link">Videos</a>
+                <a href="podcasts.html" class="nav-link">Podcasts</a>
+                <a href="#" class="nav-link">Eventos</a>
+                <a href="#site-footer" class="nav-link">Contacto</a>
+                <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Cambiar a modo oscuro">🌙</button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Gestor de Noticias</h1>
+            <p>Edita o elimina los artículos publicados en el portal.</p>
+        </section>
+        
+        <section class="panel-form-section">
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem;">
+                <a href="panel.html" class="news-btn">Volver al Panel</a>
+            </div>
+            
+            <div class="panel-form-card gestor-container">
+                <h2>Noticias Publicadas</h2>
+                <div id="gestor-news-list" style="overflow-x: auto;">
+                    <table class="news-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Título</th>
+                                <th>Autor</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gestor-news-tbody">
+                            <tr>
+                                <td colspan="4" style="text-align: center; padding: 20px;">Cargando noticias...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Edit Form Modal (Hidden by default) -->
+            <div class="panel-form-card gestor-container" id="edit-modal">
+                <h2>Editar artículo</h2>
+                <form class="article-form-prototype" id="edit-article-form" action="editar_noticia.php" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="id" id="edit-id">
+                    <div class="form-grid">
+                        <label class="form-field">
+                            <span>Fecha</span>
+                            <input type="date" name="fecha" id="edit-fecha" required>
+                        </label>
+                        <label class="form-field">
+                            <span>Título</span>
+                            <input type="text" name="titulo" id="edit-titulo" placeholder="Título del artículo" required>
+                        </label>
+                        <label class="form-field">
+                            <span>Subtítulo</span>
+                            <input type="text" name="subtitulo" id="edit-subtitulo" placeholder="Subtítulo breve">
+                        </label>
+                        <label class="form-field">
+                            <span>Autor</span>
+                            <input type="text" name="autor" id="edit-autor" placeholder="Nombre del autor/autora" required>
+                        </label>
+                        <label class="form-field form-field-full">
+                            <span>Cuerpo</span>
+                            <textarea name="cuerpo" id="edit-cuerpo" rows="8" placeholder="Escribe el contenido principal del artículo..." required></textarea>
+                        </label>
+                    </div>
+
+                    <div class="image-upload-block">
+                        <p style="margin-bottom: 10px; font-size: 14px; color: var(--text-muted);">Imagen actual: <a href="#" id="current-image-link" target="_blank">Ninguna</a></p>
+                        <button type="button" class="image-upload-btn" id="edit-upload-image-btn">Subir nueva imagen (opcional)</button>
+                        <input type="file" id="edit-article-image-input" name="imagen" accept="image/*" hidden>
+                        <div class="image-preview-box" id="edit-image-preview-box">
+                            <span>Sin imagen nueva seleccionada</span>
+                            <img id="edit-image-preview" alt="Previsualización de la nueva imagen">
+                        </div>
+                        <label class="form-field" style="margin-top: 15px;">
+                            <span>Pie de imagen</span>
+                            <input type="text" name="pieImagen" id="edit-pieImagen" placeholder="Añade contexto a la imagen">
+                        </label>
+                    </div>
+
+                    <div class="form-actions" style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button type="submit" class="form-action-btn primary">Guardar Cambios</button>
+                        <button type="button" class="form-action-btn" id="cancel-edit-btn" style="background-color: #6b7280; color: white;">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <button class="back-to-top" id="back-to-top" type="button" aria-label="Volver arriba">↑</button>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/gestor.js"></script>
+
+    <footer id="site-footer" class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-left">
+                <a href="index.html" class="logo-link footer-logo-link">
+                    <img src="img/Logo ActivaelTurismo.png" alt="Activa el Turismo logo" class="footer-logo">
+                </a>
+                <a href="index.html">
+                    <p class="footer-copy">Activa El Turismo 2026 <br> Difundiendo el alma de la Región de Antofagasta.</p>
+                </a>
+            </div>
+            <div class="footer-links">
+                <h3>¡Síguenos en nuestras Redes Sociales!</h3>
+                <div class="footer-socials-row">
+                    <a href="https://www.facebook.com/activaelturismo/" class="footer-link footer-social" aria-label="Facebook"><img src="img/facebook-brands-solid.png" alt="Facebook"></a>
+                    <a href="https://www.youtube.com/@activaelturismo5733" class="footer-link footer-social" aria-label="YouTube"><img src="img/youtube-brands-solid.png" alt="YouTube"></a>
+                    <a href="https://open.spotify.com/show/64Todh3Bnbe72WPwACtRf4" class="footer-link footer-social" aria-label="Spotify"><img src="img/spotify-brands-solid.png" alt="Spotify"></a>
+                </div>
+            </div>
+            <div class="footer-right">
+                <div class="footer-contact">
+                    <h3>Contacto</h3>
+                    <a href="mailto:contacto@activaelturismo.cl" class="footer-contact-link">
+                        <span class="footer-contact-icon">✉</span>
+                        contacto@activaelturismo.cl
+                    </a>
+                    <a href="tel:+56912345678" class="footer-contact-link">
+                        <span class="footer-contact-icon">☎</span>
+                        +56 9 1234 5678
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

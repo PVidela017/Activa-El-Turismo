@@ -2,6 +2,18 @@
 header('Content-Type: application/json');
 require 'conexion.php';
 
+function generarSlug($cadena) {
+    $cadena = mb_strtolower($cadena, 'UTF-8');
+    $cadena = str_replace(
+        array('á', 'é', 'í', 'ó', 'ú', 'ñ', 'ü'),
+        array('a', 'e', 'i', 'o', 'u', 'n', 'u'),
+        $cadena
+    );
+    $cadena = preg_replace('/[^a-z0-9]+/', '-', $cadena);
+    $cadena = trim($cadena, '-');
+    return $cadena;
+}
+
 $response = array('success' => false, 'message' => '');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -45,9 +57,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
+    $id_cat = isset($_POST['id_cat']) ? intval($_POST['id_cat']) : 1; // Por defecto a 'Sin categoría'
+    $slug_not = generarSlug($titulo); // Función para generar slug
+
     // Insertar en la base de datos
-    $sql = "INSERT INTO noticias (fecha, titulo, subtitulo, autor, cuerpo, imagen_path, pie_imagen) 
-            VALUES ('$fecha', '$titulo', '$subtitulo', '$autor', '$cuerpo', '$imagen_path', '$pie_imagen')";
+    $sql = "INSERT INTO noticias (fecha, titulo, subtitulo, autor, cuerpo, imagen_path, pie_imagen, id_cat, slug_not) 
+            VALUES ('$fecha', '$titulo', '$subtitulo', '$autor', '$cuerpo', '$imagen_path', '$pie_imagen', $id_cat, '$slug_not')";
 
     if ($conexion->query($sql) === TRUE) {
         $response['success'] = true;
