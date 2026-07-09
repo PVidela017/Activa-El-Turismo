@@ -39,6 +39,64 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    const newsCardsContainer = document.getElementById('news-cards');
+    if (newsCardsContainer) {
+        const noticias = [
+            {
+                titulo: 'Fiesta del Desierto 2026',
+                autor: 'Luis Carrasco',
+                fecha: '2026-07-01',
+                subtitulo: 'Una celebración para toda la región',
+                entrada: 'La Fiesta del Desierto reúne a comunidades y turistas en un encuentro de cultura, música y gastronomía.',
+                cuerpo: 'Este año, la celebración tendrá espacios de arte en vivo, ferias de emprendedores locales y talleres de cocina tradicional. El evento busca mostrar la riqueza patrimonial de la Región de Antofagasta y promover el turismo responsable.',
+                imagen: 'img/muelle salitrero.jpg',
+                pieimg: 'Visitantes celebrando junto a la costa desértica.'
+            },
+            {
+                titulo: 'Rutas patrimoniales renovadas',
+                autor: 'María González',
+                fecha: '2026-06-15',
+                subtitulo: 'Nuevas sendas para redescubrir la historia minera',
+                entrada: 'Las rutas patrimoniales de la región han sido mejoradas para ofrecer recorridos más seguros y accesibles.',
+                cuerpo: 'Incluyen señalización interactiva, paradas en puntos históricos y actividades guiadas para conocer el pasado minero y su impacto en la identidad local. Estas renovaciones esperan atraer a viajeros interesados en turismo cultural y sostenible.',
+                imagen: 'img/ruinas huancacha.jpg',
+                pieimg: 'Antiguo campamento minero ahora parte de una ruta accesible.'
+            }
+        ];
+
+        const formatDate = (value) => {
+            const date = new Date(value);
+            return date.toLocaleDateString('es-CL', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        };
+
+        newsCardsContainer.innerHTML = noticias.length > 0
+            ? noticias.map((noticia) => {
+                const imageStyle = noticia.imagen
+                    ? `background-image: url('${noticia.imagen}'); background-size: cover; background-position: center;`
+                    : '';
+
+                return `
+                    <article class="news-card">
+                        <div class="news-card-top">
+                            <div class="news-image-placeholder" style="${imageStyle}"></div>
+                            <span class="news-date">${formatDate(noticia.fecha)}</span>
+                        </div>
+                        <h3>${noticia.titulo}</h3>
+                        ${noticia.subtitulo ? `<p class="news-subtitle">${noticia.subtitulo}</p>` : ''}
+                        <p class="news-author">Por ${noticia.autor}</p>
+                        <p>${noticia.entrada}</p>
+                        <p>${noticia.cuerpo}</p>
+                        <a href="noticias.html" class="news-btn">Leer Noticia completa</a>
+                    </article>
+                `;
+            }).join('')
+            : '<div class="news-empty">No hay noticias disponibles.</div>';
+    }
+
     const articleForm = document.getElementById('article-form-prototype');
     const uploadButton = document.getElementById('upload-image-btn');
     const imageInput = document.getElementById('article-image-input');
