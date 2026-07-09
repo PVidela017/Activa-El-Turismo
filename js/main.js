@@ -40,32 +40,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const newsCardsContainer = document.getElementById('news-cards');
-    if (newsCardsContainer) {
-        const noticias = [
-            {
-                titulo: 'Fiesta del Desierto 2026',
-                autor: 'Luis Carrasco',
-                fecha: '2026-07-01',
-                subtitulo: 'Una celebración para toda la región',
-                entrada: 'La Fiesta del Desierto reúne a comunidades y turistas en un encuentro de cultura, música y gastronomía.',
-                cuerpo: 'Este año, la celebración tendrá espacios de arte en vivo, ferias de emprendedores locales y talleres de cocina tradicional. El evento busca mostrar la riqueza patrimonial de la Región de Antofagasta y promover el turismo responsable.',
-                imagen: 'img/muelle salitrero.jpg',
-                pieimg: 'Visitantes celebrando junto a la costa desértica.'
-            },
-            {
-                titulo: 'Rutas patrimoniales renovadas',
-                autor: 'María González',
-                fecha: '2026-06-15',
-                subtitulo: 'Nuevas sendas para redescubrir la historia minera',
-                entrada: 'Las rutas patrimoniales de la región han sido mejoradas para ofrecer recorridos más seguros y accesibles.',
-                cuerpo: 'Incluyen señalización interactiva, paradas en puntos históricos y actividades guiadas para conocer el pasado minero y su impacto en la identidad local. Estas renovaciones esperan atraer a viajeros interesados en turismo cultural y sostenible.',
-                imagen: 'img/ruinas huancacha.jpg',
-                pieimg: 'Antiguo campamento minero ahora parte de una ruta accesible.'
-            }
-        ];
+    const recentNewsCardsContainer = document.getElementById('recent-news-cards');
+    const activeContainer = newsCardsContainer || recentNewsCardsContainer;
+
+    if (activeContainer) {
+        const isRecentOnly = !!recentNewsCardsContainer;
 
         const formatDate = (value) => {
             const date = new Date(value);
+            // Ajustar zona horaria si es necesario
+            date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
             return date.toLocaleDateString('es-CL', {
                 day: 'numeric',
                 month: 'long',
@@ -73,28 +57,61 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         };
 
-        newsCardsContainer.innerHTML = noticias.length > 0
-            ? noticias.map((noticia) => {
-                const imageStyle = noticia.imagen
-                    ? `background-image: url('${noticia.imagen}'); background-size: cover; background-position: center;`
-                    : '';
+        fetch('obtener_noticias.php')
+            .then(response => response.json())
+            .then(noticias => {
+                const listToRender = isRecentOnly ? noticias.slice(0, 2) : noticias;
 
-                return `
-                    <article class="news-card">
-                        <div class="news-card-top">
-                            <div class="news-image-placeholder" style="${imageStyle}"></div>
-                            <span class="news-date">${formatDate(noticia.fecha)}</span>
-                        </div>
-                        <h3>${noticia.titulo}</h3>
-                        ${noticia.subtitulo ? `<p class="news-subtitle">${noticia.subtitulo}</p>` : ''}
-                        <p class="news-author">Por ${noticia.autor}</p>
-                        <p>${noticia.entrada}</p>
-                        <p>${noticia.cuerpo}</p>
-                        <a href="noticias.html" class="news-btn">Leer Noticia completa</a>
-                    </article>
-                `;
-            }).join('')
-            : '<div class="news-empty">No hay noticias disponibles.</div>';
+                activeContainer.innerHTML = listToRender.length > 0
+                    ? listToRender.map((noticia) => {
+                        // Reemplazar saltos de línea por <br> para mantener el formato del texto
+                        const cuerpoFormateado = noticia.cuerpo.replace(/\n/g, '<br>');
+
+                        return `
+                            <article class="news-card new-layout">
+                                <div class="news-card-left">
+                                    <div class="news-card-header">
+                                        <h3>${noticia.titulo}</h3>
+                                        <span class="news-date">${formatDate(noticia.fecha)}</span>
+                                    </div>
+                                    ${noticia.subtitulo ? `<p class="news-subtitle">${noticia.subtitulo}</p>` : ''}
+                                    <p class="news-author">Por ${noticia.autor}</p>
+                                    
+                                    <div class="news-card-content-hidden">
+                                        <p class="news-body">${cuerpoFormateado}</p>
+                                    </div>
+                                    
+                                    <button type="button" class="news-btn read-more-btn">Leer Noticia completa</button>
+                                </div>
+                                <div class="news-card-right">
+                                    ${noticia.imagen_path ? `<img src="${noticia.imagen_path}" alt="Imagen de la noticia" class="news-image">` : `<div class="news-image-placeholder empty-img"></div>`}
+                                    ${noticia.pie_imagen ? `<p class="news-caption">${noticia.pie_imagen}</p>` : ''}
+                                </div>
+                            </article>
+                        `;
+                    }).join('')
+                    : '<div class="news-empty">No hay noticias disponibles.</div>';
+
+                // Añadir evento a los botones de expandir
+                const readMoreBtns = activeContainer.querySelectorAll('.read-more-btn');
+                readMoreBtns.forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const card = this.closest('.news-card');
+                        card.classList.toggle('expanded');
+                        
+                        if (card.classList.contains('expanded')) {
+                            this.textContent = 'Cerrar Noticia';
+                        } else {
+                            this.textContent = 'Leer Noticia completa';
+                        }
+                    });
+                });
+            })
+            .catch(error => {
+                console.error('Error cargando noticias:', error);
+                activeContainer.innerHTML = '<div class="news-empty">Error al cargar las noticias.</div>';
+            });
     }
 
     const articleForm = document.getElementById('article-form-prototype');
@@ -103,9 +120,75 @@ document.addEventListener('DOMContentLoaded', function() {
     const previewBox = document.getElementById('image-preview-box');
     const previewImage = document.getElementById('image-preview');
 
+    function showToast(message, type = 'success') {
+        const toastContainer = document.getElementById('toast-container');
+        if (!toastContainer) return;
+        
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        
+        const icon = type === 'success' ? '✅' : '❌';
+        
+        toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+        toastContainer.appendChild(toast);
+        
+        toast.offsetHeight;
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.remove();
+            }, 300);
+        }, 3000);
+    }
+
     if (articleForm) {
         articleForm.addEventListener('submit', (event) => {
             event.preventDefault();
+            
+            const formData = new FormData(articleForm);
+            const submitBtn = articleForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            
+            submitBtn.textContent = 'Publicando...';
+            submitBtn.disabled = true;
+
+            fetch(articleForm.action, {
+                method: articleForm.method,
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    showToast(data.message, 'success');
+                    articleForm.reset();
+                    if (previewBox && previewImage) {
+                        previewBox.classList.remove('has-image');
+                        previewImage.style.display = 'none';
+                        previewImage.src = '';
+                        const placeholderText = previewBox.querySelector('span');
+                        if (placeholderText) {
+                            placeholderText.textContent = 'Sin imagen seleccionada';
+                        }
+                    }
+                } else {
+                    showToast(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Ocurrió un error al conectar con el servidor.', 'error');
+            })
+            .finally(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
         });
     }
 

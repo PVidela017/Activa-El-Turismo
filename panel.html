@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Activa El Turismo | Panel de Noticias</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
     <header class="site-header">
         <div class="header-inner">
@@ -13,7 +15,8 @@
                 <a href="index.html" class="logo-link">
                     <img src="img/Logo ActivaelTurismo.png" alt="Activa el Turismo logo" class="site-logo">
                 </a>
-                <a href="index.html" class="logo-link site-title-link">Activa El Turismo <br> Difundiendo el alma de la Región de Antofagasta.</a>
+                <a href="index.html" class="logo-link site-title-link">Activa El Turismo <br> Difundiendo el alma de la
+                    Región de Antofagasta.</a>
             </div>
 
             <nav class="site-nav" aria-label="Main navigation">
@@ -24,7 +27,8 @@
                 <a href="podcasts.html" class="nav-link">Podcasts</a>
                 <a href="#" class="nav-link">Eventos</a>
                 <a href="#site-footer" class="nav-link">Contacto</a>
-                <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Cambiar a modo oscuro">🌙</button>
+                <button class="theme-toggle" id="theme-toggle" type="button"
+                    aria-label="Cambiar a modo oscuro">🌙</button>
             </nav>
         </div>
     </header>
@@ -38,7 +42,8 @@
             <a href="noticias.html" class="news-btn">Volver a Noticias</a>
             <div class="panel-form-card">
                 <h2>Crear artículo</h2>
-                <form class="article-form-prototype" id="article-form-prototype">
+                <form class="article-form-prototype" id="article-form-prototype" action="guardar_noticia.php"
+                    method="POST" enctype="multipart/form-data">
                     <div class="form-grid">
                         <label class="form-field">
                             <span>Fecha</span>
@@ -58,13 +63,14 @@
                         </label>
                         <label class="form-field form-field-full">
                             <span>Cuerpo</span>
-                            <textarea name="cuerpo" rows="8" placeholder="Escribe el contenido principal del artículo..."></textarea>
+                            <textarea name="cuerpo" rows="8"
+                                placeholder="Escribe el contenido principal del artículo..."></textarea>
                         </label>
                     </div>
 
                     <div class="image-upload-block">
                         <button type="button" class="image-upload-btn" id="upload-image-btn">Subir imagen</button>
-                        <input type="file" id="article-image-input" accept="image/*" hidden>
+                        <input type="file" id="article-image-input" name="imagen" accept="image/*" hidden>
                         <div class="image-preview-box" id="image-preview-box">
                             <span>Sin imagen seleccionada</span>
                             <img id="image-preview" alt="Previsualización de la imagen">
@@ -76,7 +82,6 @@
                     </div>
 
                     <div class="form-actions">
-                        <button type="button" class="form-action-btn secondary">Vista previa</button>
                         <button type="submit" class="form-action-btn primary">Publicar</button>
                     </div>
                 </form>
@@ -85,6 +90,8 @@
     </main>
 
     <button class="back-to-top" id="back-to-top" type="button" aria-label="Volver arriba">↑</button>
+
+    <div id="toast-container" class="toast-container"></div>
 
     <script src="js/main.js"></script>
 
@@ -95,15 +102,19 @@
                     <img src="img/Logo ActivaelTurismo.png" alt="Activa el Turismo logo" class="footer-logo">
                 </a>
                 <a href="index.html">
-                    <p class="footer-copy">Activa El Turismo 2026 <br> Difundiendo el alma de la Región de Antofagasta.</p>
+                    <p class="footer-copy">Activa El Turismo 2026 <br> Difundiendo el alma de la Región de Antofagasta.
+                    </p>
                 </a>
             </div>
             <div class="footer-links">
                 <h3>¡Síguenos en nuestras Redes Sociales!</h3>
                 <div class="footer-socials-row">
-                    <a href="https://www.facebook.com/activaelturismo/" class="footer-link footer-social" aria-label="Facebook"><img src="img/facebook-brands-solid.png" alt="Facebook"></a>
-                    <a href="https://www.youtube.com/@activaelturismo5733" class="footer-link footer-social" aria-label="YouTube"><img src="img/youtube-brands-solid.png" alt="YouTube"></a>
-                    <a href="https://open.spotify.com/show/64Todh3Bnbe72WPwACtRf4" class="footer-link footer-social" aria-label="Spotify"><img src="img/spotify-brands-solid.png" alt="Spotify"></a>
+                    <a href="https://www.facebook.com/activaelturismo/" class="footer-link footer-social"
+                        aria-label="Facebook"><img src="img/facebook-brands-solid.png" alt="Facebook"></a>
+                    <a href="https://www.youtube.com/@activaelturismo5733" class="footer-link footer-social"
+                        aria-label="YouTube"><img src="img/youtube-brands-solid.png" alt="YouTube"></a>
+                    <a href="https://open.spotify.com/show/64Todh3Bnbe72WPwACtRf4" class="footer-link footer-social"
+                        aria-label="Spotify"><img src="img/spotify-brands-solid.png" alt="Spotify"></a>
                 </div>
             </div>
             <div class="footer-right">
@@ -122,4 +133,5 @@
         </div>
     </footer>
 </body>
+
 </html>
