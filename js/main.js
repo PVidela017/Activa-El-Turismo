@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     ${noticia.subtitulo ? `<p class="news-subtitle">${noticia.subtitulo}</p>` : ''}
                                     <p class="news-author">Por ${noticia.autor}</p>
                                     
-                                    <a href="noticia_completa.html?id=${noticia.id}" class="news-btn read-more-btn">Leer Noticia completa</a>
+                                    <a href="noticia_completa.html?slug=${noticia.slug_not}" class="news-btn read-more-btn">Leer Noticia completa</a>
                                 </div>
                                 <div class="news-card-right">
                                     ${noticia.imagen_path ? `<img src="${noticia.imagen_path}" alt="Imagen de la noticia" class="news-image">` : `<div class="news-image-placeholder empty-img"></div>`}
@@ -94,10 +94,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const singleNewsContainer = document.getElementById('single-news-container');
     if (singleNewsContainer) {
         const urlParams = new URLSearchParams(window.location.search);
-        const newsId = urlParams.get('id');
+        const newsSlug = urlParams.get('slug');
 
-        if (!newsId) {
-            singleNewsContainer.innerHTML = '<div class="news-empty">ID de noticia no proporcionado. <br><br> <a href="noticias.html" class="action-btn">Volver a Noticias</a></div>';
+        if (!newsSlug) {
+            singleNewsContainer.innerHTML = '<div class="news-empty">Noticia no especificada. <br><br> <a href="noticias.html" class="action-btn">Volver a Noticias</a></div>';
         } else {
             const formatDate = (value) => {
                 const date = new Date(value);
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             };
 
-            fetch(`obtener_noticias.php?id=${newsId}`)
+            fetch(`obtener_noticias.php?slug=${newsSlug}`)
                 .then(response => response.json())
                 .then(noticia => {
                     if (noticia.error) {
