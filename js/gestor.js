@@ -98,6 +98,10 @@ document.addEventListener('DOMContentLoaded', function() {
         editAutor.value = noticia.autor;
         editCuerpo.value = noticia.cuerpo;
         editPieImagen.value = noticia.pie_imagen || '';
+        const editIdCat = document.getElementById('edit-id_cat');
+        if (editIdCat && noticia.id_cat) {
+            editIdCat.value = noticia.id_cat;
+        }
 
         if (noticia.imagen_path) {
             currentImageLink.href = noticia.imagen_path;

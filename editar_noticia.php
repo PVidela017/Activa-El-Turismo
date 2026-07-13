@@ -36,6 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $autor = isset($_POST['autor']) ? $conexion->real_escape_string($_POST['autor']) : '';
     $cuerpo = isset($_POST['cuerpo']) ? $conexion->real_escape_string($_POST['cuerpo']) : '';
     $pie_imagen = isset($_POST['pieImagen']) ? $conexion->real_escape_string($_POST['pieImagen']) : '';
+    $id_cat = isset($_POST['id_cat']) ? intval($_POST['id_cat']) : 1;
 
     if (empty($fecha) || empty($titulo) || empty($autor) || empty($cuerpo)) {
         $response['message'] = 'Por favor, completa todos los campos requeridos.';
@@ -97,6 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 cuerpo = '$cuerpo',
                 imagen_path = '$imagen_path',
                 pie_imagen = '$pie_imagen',
+                id_cat = $id_cat,
                 slug_not = '$slug_not'
             WHERE id = $id";
 

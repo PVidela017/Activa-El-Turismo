@@ -57,38 +57,83 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         };
 
-        fetch('obtener_noticias.php')
-            .then(response => response.json())
-            .then(noticias => {
-                const listToRender = isRecentOnly ? noticias.slice(0, 2) : noticias;
+        const loadNewsData = (search = '', cat = '') => {
+            activeContainer.innerHTML = '<div class="news-loading">Cargando noticias...</div>';
+            const url = `obtener_noticias.php?search=${encodeURIComponent(search)}&cat=${encodeURIComponent(cat)}`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(noticias => {
+                    if (noticias.error) {
+                        activeContainer.innerHTML = '<div class="news-empty">Error al cargar las noticias.</div>';
+                        return;
+                    }
+                    const listToRender = isRecentOnly ? noticias.slice(0, 2) : noticias;
 
-                activeContainer.innerHTML = listToRender.length > 0
-                    ? listToRender.map((noticia) => {
-                        return `
-                            <article class="news-card new-layout">
-                                <div class="news-card-left">
-                                    <div class="news-card-header">
-                                        <h3>${noticia.titulo}</h3>
-                                        <span class="news-date">${formatDate(noticia.fecha)}</span>
+                    activeContainer.innerHTML = listToRender.length > 0
+                        ? listToRender.map((noticia) => {
+                            return `
+                                <article class="news-card new-layout">
+                                    <div class="news-card-left">
+                                        <div class="news-card-header">
+                                            <h3>${noticia.titulo}</h3>
+                                            <span class="news-date">${formatDate(noticia.fecha)}</span>
+                                        </div>
+                                        ${noticia.subtitulo ? `<p class="news-subtitle">${noticia.subtitulo}</p>` : ''}
+                                        <p class="news-author">Por ${noticia.autor}</p>
+                                        
+                                        <a href="noticia_completa.html?slug=${noticia.slug_not}" class="news-btn read-more-btn">Leer Noticia completa</a>
                                     </div>
-                                    ${noticia.subtitulo ? `<p class="news-subtitle">${noticia.subtitulo}</p>` : ''}
-                                    <p class="news-author">Por ${noticia.autor}</p>
-                                    
-                                    <a href="noticia_completa.html?slug=${noticia.slug_not}" class="news-btn read-more-btn">Leer Noticia completa</a>
-                                </div>
-                                <div class="news-card-right">
-                                    ${noticia.imagen_path ? `<img src="${noticia.imagen_path}" alt="Imagen de la noticia" class="news-image">` : `<div class="news-image-placeholder empty-img"></div>`}
-                                    ${noticia.pie_imagen ? `<p class="news-caption">${noticia.pie_imagen}</p>` : ''}
-                                </div>
-                            </article>
-                        `;
-                    }).join('')
-                    : '<div class="news-empty">No hay noticias disponibles.</div>';
-            })
-            .catch(error => {
-                console.error('Error cargando noticias:', error);
-                activeContainer.innerHTML = '<div class="news-empty">Error al cargar las noticias.</div>';
-            });
+                                    <div class="news-card-right">
+                                        ${noticia.imagen_path ? `<img src="${noticia.imagen_path}" alt="Imagen de la noticia" class="news-image">` : `<div class="news-image-placeholder empty-img"></div>`}
+                                        ${noticia.pie_imagen ? `<p class="news-caption">${noticia.pie_imagen}</p>` : ''}
+                                    </div>
+                                </article>
+                            `;
+                        }).join('')
+                        : '<div class="news-empty">No se encontraron noticias con esos criterios.</div>';
+                })
+                .catch(error => {
+                    console.error('Error cargando noticias:', error);
+                    activeContainer.innerHTML = '<div class="news-empty">Error al cargar las noticias.</div>';
+                });
+        };
+
+        const searchInput = document.getElementById('search-input');
+        const catFilter = document.getElementById('category-filter');
+        
+        if (catFilter) {
+            fetch('obtener_categorias.php')
+                .then(res => res.json())
+                .then(cats => {
+                    cats.forEach(c => {
+                        const opt = document.createElement('option');
+                        opt.value = c.id_cat;
+                        opt.textContent = c.nombre_cat;
+                        catFilter.appendChild(opt);
+                    });
+                })
+                .catch(err => console.error('Error cargando categorías', err));
+        }
+
+        if (searchInput || catFilter) {
+            let timeout = null;
+            if (searchInput) {
+                searchInput.addEventListener('input', () => {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => {
+                        loadNewsData(searchInput.value, catFilter ? catFilter.value : '');
+                    }, 400);
+                });
+            }
+            if (catFilter) {
+                catFilter.addEventListener('change', () => {
+                    loadNewsData(searchInput ? searchInput.value : '', catFilter.value);
+                });
+            }
+        }
+
+        loadNewsData();
     }
 
     const singleNewsContainer = document.getElementById('single-news-container');

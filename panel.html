@@ -27,6 +27,7 @@
                 <a href="podcasts.html" class="nav-link">Podcasts</a>
                 <a href="#" class="nav-link">Eventos</a>
                 <a href="#site-footer" class="nav-link">Contacto</a>
+                <a href="panel.php" class="nav-link">Acceder</a>
                 <button class="theme-toggle" id="theme-toggle" type="button"
                     aria-label="Cambiar a modo oscuro">🌙</button>
             </nav>
@@ -81,6 +82,17 @@
                         <label class="form-field">
                             <span>Pie de imagen</span>
                             <input type="text" name="pieImagen" placeholder="Añade contexto a la imagen">
+                        </label>
+                        <label class="form-field">
+                            <span>Categoría</span>
+                            <select name="id_cat" required>
+                                <option value="" disabled selected>Selecciona una categoría</option>
+                                <option value="1">Destinos</option>
+                                <option value="2">Gastronomía</option>
+                                <option value="3">Cultura</option>
+                                <option value="4">Minería</option>
+                                <option value="5">Eventos</option>
+                            </select>
                         </label>
                     </div>
 

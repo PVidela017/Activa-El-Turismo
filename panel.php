@@ -85,6 +85,22 @@
                             <span>Pie de imagen</span>
                             <input type="text" name="pieImagen" placeholder="Añade contexto a la imagen">
                         </label>
+                        <label class="form-field">
+                            <span>Categoría</span>
+                            <select name="id_cat" required>
+                                <option value="" disabled selected>Selecciona una categoría</option>
+                                <?php
+                                require_once 'conexion.php';
+                                $query_cat = "SELECT id_cat, nombre_cat FROM categorias ORDER BY nombre_cat ASC";
+                                $result_cat = $conexion->query($query_cat);
+                                if ($result_cat && $result_cat->num_rows > 0) {
+                                    while ($row_cat = $result_cat->fetch_assoc()) {
+                                        echo '<option value="' . $row_cat['id_cat'] . '">' . htmlspecialchars($row_cat['nombre_cat']) . '</option>';
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </label>
                     </div>
 
                     <div class="form-actions">
