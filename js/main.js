@@ -64,9 +64,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 activeContainer.innerHTML = listToRender.length > 0
                     ? listToRender.map((noticia) => {
-                        // Reemplazar saltos de línea por <br> para mantener el formato del texto
-                        const cuerpoFormateado = noticia.cuerpo.replace(/\n/g, '<br>');
-
                         return `
                             <article class="news-card new-layout">
                                 <div class="news-card-left">
@@ -77,11 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     ${noticia.subtitulo ? `<p class="news-subtitle">${noticia.subtitulo}</p>` : ''}
                                     <p class="news-author">Por ${noticia.autor}</p>
                                     
-                                    <div class="news-card-content-hidden">
-                                        <p class="news-body">${cuerpoFormateado}</p>
-                                    </div>
-                                    
-                                    <button type="button" class="news-btn read-more-btn">Leer Noticia completa</button>
+                                    <a href="noticia_completa.html?id=${noticia.id}" class="news-btn read-more-btn">Leer Noticia completa</a>
                                 </div>
                                 <div class="news-card-right">
                                     ${noticia.imagen_path ? `<img src="${noticia.imagen_path}" alt="Imagen de la noticia" class="news-image">` : `<div class="news-image-placeholder empty-img"></div>`}
@@ -91,27 +84,76 @@ document.addEventListener('DOMContentLoaded', function() {
                         `;
                     }).join('')
                     : '<div class="news-empty">No hay noticias disponibles.</div>';
-
-                // Añadir evento a los botones de expandir
-                const readMoreBtns = activeContainer.querySelectorAll('.read-more-btn');
-                readMoreBtns.forEach(btn => {
-                    btn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        const card = this.closest('.news-card');
-                        card.classList.toggle('expanded');
-                        
-                        if (card.classList.contains('expanded')) {
-                            this.textContent = 'Cerrar Noticia';
-                        } else {
-                            this.textContent = 'Leer Noticia completa';
-                        }
-                    });
-                });
             })
             .catch(error => {
                 console.error('Error cargando noticias:', error);
                 activeContainer.innerHTML = '<div class="news-empty">Error al cargar las noticias.</div>';
             });
+    }
+
+    const singleNewsContainer = document.getElementById('single-news-container');
+    if (singleNewsContainer) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const newsId = urlParams.get('id');
+
+        if (!newsId) {
+            singleNewsContainer.innerHTML = '<div class="news-empty">ID de noticia no proporcionado. <br><br> <a href="noticias.html" class="action-btn">Volver a Noticias</a></div>';
+        } else {
+            const formatDate = (value) => {
+                const date = new Date(value);
+                date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+                return date.toLocaleDateString('es-CL', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+            };
+
+            fetch(`obtener_noticias.php?id=${newsId}`)
+                .then(response => response.json())
+                .then(noticia => {
+                    if (noticia.error) {
+                        singleNewsContainer.innerHTML = `<div class="news-empty">${noticia.error}. <br><br> <a href="noticias.html" class="action-btn">Volver a Noticias</a></div>`;
+                        return;
+                    }
+
+                    const cuerpoFormateado = noticia.cuerpo.replace(/\n/g, '<br>');
+
+                    singleNewsContainer.innerHTML = `
+                        <article class="single-news-detail">
+                            <div class="single-news-header">
+                                <h1 class="single-news-title">${noticia.titulo}</h1>
+                                ${noticia.subtitulo ? `<p class="single-news-subtitle">${noticia.subtitulo}</p>` : ''}
+                                <div class="single-news-meta">
+                                    <span class="news-author">Por <strong>${noticia.autor}</strong></span>
+                                    <span class="meta-divider">•</span>
+                                    <span class="news-date">${formatDate(noticia.fecha)}</span>
+                                </div>
+                            </div>
+                            
+                            ${noticia.imagen_path ? `
+                                <div class="single-news-media">
+                                    <img src="${noticia.imagen_path}" alt="${noticia.titulo}" class="single-news-image">
+                                    ${noticia.pie_imagen ? `<p class="single-news-caption">${noticia.pie_imagen}</p>` : ''}
+                                </div>
+                            ` : ''}
+
+                            <div class="single-news-content">
+                                <p class="single-news-body">${cuerpoFormateado}</p>
+                            </div>
+                            
+                            <div class="single-news-actions">
+                                <a href="noticias.html" class="action-btn">← Volver a Noticias</a>
+                            </div>
+                        </article>
+                    `;
+                })
+                .catch(error => {
+                    console.error('Error cargando la noticia:', error);
+                    singleNewsContainer.innerHTML = '<div class="news-empty">Error al cargar la noticia. <br><br> <a href="noticias.html" class="action-btn">Volver a Noticias</a></div>';
+                });
+        }
+
     }
 
     const articleForm = document.getElementById('article-form-prototype');

@@ -2,18 +2,40 @@
 header('Content-Type: application/json');
 require 'conexion.php';
 
-$sql = "SELECT id, fecha, titulo, subtitulo, autor, cuerpo, imagen_path, pie_imagen FROM noticias ORDER BY fecha DESC, fecha_creacion DESC";
-$resultado = $conexion->query($sql);
-
-$noticias = array();
-
-if ($resultado->num_rows > 0) {
-    while($fila = $resultado->fetch_assoc()) {
-        $noticias[] = $fila;
+if (isset($_GET['id'])) {
+    $id = intval($_GET['id']);
+    $sql = "SELECT id, fecha, titulo, subtitulo, autor, cuerpo, imagen_path, pie_imagen FROM noticias WHERE id = ?";
+    $stmt = $conexion->prepare($sql);
+    
+    if ($stmt) {
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        
+        if ($resultado->num_rows > 0) {
+            echo json_encode($resultado->fetch_assoc());
+        } else {
+            echo json_encode(['error' => 'Noticia no encontrada']);
+        }
+        $stmt->close();
+    } else {
+        echo json_encode(['error' => 'Error al preparar la consulta de base de datos']);
     }
+} else {
+    $sql = "SELECT id, fecha, titulo, subtitulo, autor, cuerpo, imagen_path, pie_imagen FROM noticias ORDER BY fecha DESC, fecha_creacion DESC";
+    $resultado = $conexion->query($sql);
+    
+    $noticias = array();
+    
+    if ($resultado->num_rows > 0) {
+        while($fila = $resultado->fetch_assoc()) {
+            $noticias[] = $fila;
+        }
+    }
+    
+    echo json_encode($noticias);
 }
-
-echo json_encode($noticias);
 
 $conexion->close();
 ?>
+
