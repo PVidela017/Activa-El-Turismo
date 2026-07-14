@@ -312,50 +312,121 @@ document.addEventListener('DOMContentLoaded', function() {
     const nextBtn = document.querySelector('.slider-next');
     const indicators = document.querySelectorAll('.indicator');
 
-    if (!sliderTrack || sliderItems.length === 0) {
-        return;
+    if (sliderTrack && sliderItems.length > 0) {
+        let currentSlide = 0;
+        const slideCount = sliderItems.length;
+
+        function updateSlider() {
+            const offset = -currentSlide * 100;
+            sliderTrack.style.transform = `translateX(${offset}%)`;
+
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slideCount;
+            updateSlider();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slideCount) % slideCount;
+            updateSlider();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlider();
+        }
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', prevSlide);
+        }
+        if (nextBtn) {
+            nextBtn.addEventListener('click', nextSlide);
+        }
+
+        indicators.forEach((indicator) => {
+            indicator.addEventListener('click', (e) => {
+                const slideIndex = parseInt(e.target.dataset.slide, 10);
+                goToSlide(slideIndex);
+            });
+        });
+
+        setInterval(nextSlide, 5000);
     }
 
-    let currentSlide = 0;
-    const slideCount = sliderItems.length;
+    const videoCardsContainer = document.getElementById('video-cards-container');
+    if (videoCardsContainer) {
+        fetch('obtener_videos.php')
+            .then(res => res.json())
+            .then(videos => {
+                if (videos.length > 0) {
+                    videoCardsContainer.innerHTML = videos.map(v => `
+                        <article class="episode">
+                            <div class="episode-left">
+                                <h3 class="episode-title">${v.titulo}</h3>
+                                ${v.descripcion ? `<p class="episode-recap">${v.descripcion}</p>` : ''}
+                                <p class="episode-meta">Duración: ${v.duracion} · Fecha: ${new Date(v.fecha_publicacion).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
+                            </div>
+                            <div class="episode-right">
+                                ${v.iframe_codigo}
+                            </div>
+                        </article>
+                    `).join('');
+                } else {
+                    videoCardsContainer.innerHTML = '<div class="news-empty">No hay videos disponibles.</div>';
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                videoCardsContainer.innerHTML = '<div class="news-empty">Error al cargar videos.</div>';
+            });
+    }
 
-    function updateSlider() {
-        const offset = -currentSlide * 100;
-        sliderTrack.style.transform = `translateX(${offset}%)`;
+    const videoForm = document.getElementById('video-form-prototype');
+    if (videoForm) {
+        videoForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const submitBtn = videoForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            
+            submitBtn.textContent = 'Agregando...';
+            submitBtn.disabled = true;
 
-        indicators.forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === currentSlide);
+            fetch(videoForm.action, {
+                method: videoForm.method,
+                body: new FormData(videoForm)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showToast(data.message, 'success');
+                    videoForm.reset();
+                } else {
+                    showToast(data.message, 'error');
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                showToast('Error de red al agregar video.', 'error');
+            })
+            .finally(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
         });
     }
-
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % slideCount;
-        updateSlider();
-    }
-
-    function prevSlide() {
-        currentSlide = (currentSlide - 1 + slideCount) % slideCount;
-        updateSlider();
-    }
-
-    function goToSlide(index) {
-        currentSlide = index;
-        updateSlider();
-    }
-
-    if (prevBtn) {
-        prevBtn.addEventListener('click', prevSlide);
-    }
-    if (nextBtn) {
-        nextBtn.addEventListener('click', nextSlide);
-    }
-
-    indicators.forEach((indicator) => {
-        indicator.addEventListener('click', (e) => {
-            const slideIndex = parseInt(e.target.dataset.slide, 10);
-            goToSlide(slideIndex);
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            const content = header.nextElementSibling;
+            const icon = header.querySelector('.accordion-icon');
+            
+            // Toggle actual
+            content.classList.toggle('active');
+            if (icon) icon.classList.toggle('open');
         });
     });
-
-    setInterval(nextSlide, 5000);
 });

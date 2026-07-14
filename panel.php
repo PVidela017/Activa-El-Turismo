@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Activa El Turismo | Panel de Noticias</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css?v=2">
 </head>
 
 <body>
@@ -23,7 +23,7 @@
             <nav class="site-nav" aria-label="Main navigation">
                 <a href="index.html" class="nav-link">Inicio</a>
                 <a href="noticias.html" class="nav-link">Noticias</a>
-                <a href="#" class="nav-link">Destinos</a>
+                <a href="destinos.html" class="nav-link">Destinos</a>
                 <a href="videos.html" class="nav-link">Videos</a>
                 <a href="podcasts.html" class="nav-link">Podcasts</a>
                 <a href="#" class="nav-link">Eventos</a>
@@ -42,14 +42,16 @@
             <p>Ingresa los datos del artículo que deseas publicar.</p>
         </section>
         <section class="panel-form-section">
-            <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem;">
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem; flex-wrap: wrap;">
                 <a href="noticias.html" class="news-btn">Volver a Noticias</a>
                 <a href="gestor_noticias.php" class="news-btn" style="background-color: #2563eb; color: #fff;">Gestionar Noticias</a>
+                <a href="gestor_videos.php" class="news-btn" style="background-color: #ef4444; color: #fff;">Gestionar Videos</a>
             </div>
-            <div class="panel-form-card">
-                <h2>Crear artículo</h2>
-                <form class="article-form-prototype" id="article-form-prototype" action="guardar_noticia.php"
-                    method="POST" enctype="multipart/form-data">
+            <div class="panel-form-card accordion-card">
+                <h2 class="accordion-header">Crear artículo <span class="accordion-icon">▼</span></h2>
+                <div class="accordion-content">
+                    <form class="article-form-prototype" id="article-form-prototype" action="guardar_noticia.php"
+                        method="POST" enctype="multipart/form-data">
                     <div class="form-grid">
                         <label class="form-field">
                             <span>Fecha</span>
@@ -107,6 +109,24 @@
                         <button type="submit" class="form-action-btn primary">Publicar</button>
                     </div>
                 </form>
+                </div>
+            </div>
+            
+            <div class="panel-form-card accordion-card" style="margin-top: 2rem;">
+                <h2 class="accordion-header">Agregar Video <span class="accordion-icon">▼</span></h2>
+                <div class="accordion-content">
+                    <form class="video-form-prototype" id="video-form-prototype" action="agregar_video.php" method="POST">
+                        <div class="form-grid">
+                            <label class="form-field form-field-full">
+                                <span>Enlace de YouTube</span>
+                                <input type="url" name="youtube_url" placeholder="https://www.youtube.com/watch?v=..." required>
+                            </label>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="form-action-btn primary">Agregar Video</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </section>
     </main>
@@ -115,7 +135,7 @@
 
     <div id="toast-container" class="toast-container"></div>
 
-    <script src="js/main.js"></script>
+    <script src="js/main.js?v=2"></script>
 
     <footer id="site-footer" class="site-footer">
         <div class="footer-inner">

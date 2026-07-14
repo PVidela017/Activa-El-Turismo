@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <nav class="site-nav" aria-label="Main navigation">
                 <a href="index.html" class="nav-link">Inicio</a>
                 <a href="noticias.html" class="nav-link">Noticias</a>
-                <a href="#" class="nav-link">Destinos</a>
+                <a href="destinos.html" class="nav-link">Destinos</a>
                 <a href="videos.html" class="nav-link">Videos</a>
                 <a href="podcasts.html" class="nav-link">Podcasts</a>
                 <a href="#" class="nav-link">Eventos</a>

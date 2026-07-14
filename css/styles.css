@@ -1443,3 +1443,11 @@ body {
         font-size: 1.5rem;
     }
 }
+
+/* Accordions */
+.accordion-header { cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 15px; background-color: var(--card-bg); border-radius: 8px; transition: background-color 0.2s ease; user-select: none; margin-bottom: 0; }
+.accordion-header:hover { background-color: var(--bg-color); }
+.accordion-content { display: none; padding-top: 15px; }
+.accordion-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+.accordion-icon { font-size: 0.8rem; transition: transform 0.3s ease; }
+.accordion-icon.open { transform: rotate(180deg); }
