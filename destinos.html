@@ -33,22 +33,44 @@
     <main>
         <section class="destinos-section" id="destinos">
             <h2 class="section-title">Descubre Nuestros Destinos</h2>
-            <p class="section-description">Explora en el mapa los lugares que dan vida al patrimonio de la Región de Antofagasta.</p>
-            <div class="map-container">
-                <iframe
-                    src="https://www.google.com/maps?q=Antofagasta,+Chile&output=embed"
-                    allowfullscreen=""
-                    loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"
-                    title="Mapa de destinos turísticos - Región de Antofagasta">
-                </iframe>
+            <p class="section-description">Explora en el mapa los lugares que dan vida al patrimonio de la Región de Antofagasta. Haz clic en una tarjeta para ubicarla en el mapa.</p>
+
+            <div class="destinos-layout">
+                <div class="destinos-map-col" id="destinos-map-col">
+                    <div class="destino-detail-panel" id="destino-detail">
+                        <button type="button" class="destino-detail-close" id="destino-detail-close" aria-label="Cerrar">✕</button>
+                        <span class="destino-tipo-badge" id="destino-detail-tipo"></span>
+                        <h3 id="destino-detail-nombre"></h3>
+                        <p class="destino-detail-direccion" id="destino-detail-direccion"></p>
+                        <p class="destino-detail-descripcion" id="destino-detail-descripcion"></p>
+                        <p class="destino-detail-dato" id="destino-detail-dato"></p>
+                    </div>
+                    <div class="map-container">
+                        <iframe
+                            id="destinos-map-iframe"
+                            src="https://www.google.com/maps?q=Antofagasta,+Chile&output=embed"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                            title="Mapa de destinos turísticos - Región de Antofagasta">
+                        </iframe>
+                    </div>
+                </div>
+
+                <aside class="destinos-cards-col">
+                    <div class="destinos-cards" id="destinos-cards">
+                        <div class="news-loading">Cargando destinos...</div>
+                    </div>
+                    <a href="panel.php" class="news-btn destinos-add-btn">+ Agregar un destino</a>
+                </aside>
             </div>
         </section>
     </main>
 
     <button class="back-to-top" id="back-to-top" type="button" aria-label="Volver arriba">↑</button>
 
-    <script src="js/main.js"></script>
+    <script src="js/main.js?v=2"></script>
+    <script src="js/destinos.js?v=2"></script>
 
     <footer id="site-footer" class="site-footer">
         <div class="footer-inner">

@@ -786,9 +786,20 @@ body {
     background: var(--surface);
 }
 
-.map-container {
+.destinos-layout {
     max-width: 1300px;
-    margin: 0 auto;
+    margin: 32px auto 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+.destinos-map-col {
+    flex: 1 1 64%;
+    min-width: 0;
+}
+
+.map-container {
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 8px 22px var(--shadow);
@@ -797,8 +808,170 @@ body {
 .map-container iframe {
     display: block;
     width: 100%;
-    height: 75vh;
-    min-height: 500px;
+    height: 620px;
+    min-height: 420px;
+    border: 0;
+    transition: height 250ms ease;
+}
+
+.destinos-map-col.detail-open .map-container iframe {
+    height: 380px;
+}
+
+.destino-detail-panel {
+    display: none;
+    position: relative;
+    background: var(--surface-muted);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px 44px 20px 20px;
+    margin-bottom: 16px;
+}
+
+.destino-detail-panel.visible {
+    display: block;
+}
+
+.destino-detail-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--text-main);
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.destino-detail-close:hover {
+    background: var(--border-color);
+}
+
+.destino-tipo-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 10px;
+    background: var(--accent);
+    color: #1a1a1a;
+}
+
+.destino-detail-panel h3 {
+    color: var(--heading-color);
+    font-size: 1.3rem;
+    margin-bottom: 6px;
+}
+
+.destino-detail-direccion {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+.destino-detail-descripcion {
+    color: var(--text-main);
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.destino-detail-dato {
+    color: var(--text-muted);
+    line-height: 1.6;
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 10px 14px;
+}
+
+.destino-detail-dato:empty {
+    display: none;
+}
+
+.destinos-cards-col {
+    flex: 1 1 34%;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.destinos-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 620px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.destino-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    text-align: left;
+    background: var(--surface-muted);
+    border: 2px solid transparent;
+    border-radius: 14px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: border-color 150ms ease, transform 150ms ease;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    width: 100%;
+    outline: none;
+}
+
+.destino-card:hover {
+    transform: translateY(-2px);
+}
+
+.destino-card.active {
+    border-color: var(--heading-color);
+}
+
+.destino-card-icon {
+    font-size: 1.4rem;
+    line-height: 1;
+    margin-top: 2px;
+}
+
+.destino-card-body h4 {
+    color: var(--heading-color);
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.destino-card-body p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.destinos-add-btn {
+    text-align: center;
+    align-self: stretch;
+}
+
+@media (max-width: 900px) {
+    .destinos-layout {
+        flex-direction: column;
+    }
+
+    .destinos-cards-col {
+        width: 100%;
+    }
+
+    .destinos-cards {
+        max-height: none;
+    }
 }
 
 .news-section {

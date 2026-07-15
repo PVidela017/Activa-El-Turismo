@@ -47,6 +47,7 @@
                 <a href="gestor_noticias.php" class="news-btn" style="background-color: #2563eb; color: #fff;">Gestionar Noticias</a>
                 <a href="gestor_videos.php" class="news-btn" style="background-color: #ef4444; color: #fff;">Gestionar Videos</a>
                 <a href="gestor_podcasts.php" class="news-btn" style="background-color: #10b981; color: #fff;">Gestionar Podcasts</a>
+                <a href="gestor_destinos.php" class="news-btn" style="background-color: #059669; color: #fff;">Gestionar Destinos</a>
             </div>
             <div class="panel-form-card accordion-card">
                 <h2 class="accordion-header">Crear artículo <span class="accordion-icon">▼</span></h2>
@@ -146,6 +147,77 @@
                     </form>
                 </div>
             </div>
+            <div class="panel-form-card accordion-card" style="margin-top: 2rem;">
+                <h2 class="accordion-header">Agregar Destino <span class="accordion-icon">▼</span></h2>
+                <div class="accordion-content">
+                    <form id="destino-form" action="guardar_destino.php" method="POST" enctype="multipart/form-data">
+                        <div class="form-grid">
+                            <label class="form-field">
+                                <span>Nombre del lugar</span>
+                                <input type="text" name="nombre" placeholder="Ej: Muelle Salitrero" required>
+                            </label>
+                            <label class="form-field">
+                                <span>Tipo</span>
+                                <select name="tipo" required>
+                                    <option value="turistico">Centro turístico</option>
+                                    <option value="restaurante">Restaurante</option>
+                                </select>
+                            </label>
+                            <label class="form-field form-field-full">
+                                <span>Dirección (referencial, opcional)</span>
+                                <input type="text" name="direccion" placeholder="Ej: Av. Balmaceda 2355, Antofagasta">
+                            </label>
+                            <label class="form-field form-field-full">
+                                <span>Coordenadas pegadas desde Google Maps (opcional, formato "lat, lng")</span>
+                                <input type="text" id="coords-paste" placeholder="Ej: -23.6509, -70.3975">
+                            </label>
+                            <label class="form-field">
+                                <span>Latitud</span>
+                                <input type="text" name="lat" id="destino-lat" placeholder="-23.6509" required>
+                            </label>
+                            <label class="form-field">
+                                <span>Longitud</span>
+                                <input type="text" name="lng" id="destino-lng" placeholder="-70.3975" required>
+                            </label>
+                            <label class="form-field form-field-full">
+                                <span>Descripción breve</span>
+                                <textarea name="descripcion" rows="4" placeholder="Cuenta brevemente de qué se trata este lugar..." required></textarea>
+                            </label>
+                            <label class="form-field form-field-full">
+                                <span>Dato curioso (opcional)</span>
+                                <textarea name="dato_curioso" rows="3" placeholder="Un dato interesante o poco conocido sobre el lugar..."></textarea>
+                            </label>
+                        </div>
+
+                        <p style="font-size: 14px; color: var(--text-muted); margin: 10px 0;">
+                            💡 Para obtener las coordenadas exactas: abre
+                            <a href="https://www.google.com/maps" target="_blank" rel="noopener">Google Maps</a>,
+                            busca el lugar, haz clic derecho sobre el punto exacto y selecciona las coordenadas que
+                            aparecen arriba del menú (se copian al portapapeles). Luego pégalas en el campo de arriba.
+                        </p>
+
+                        <div class="image-upload-block">
+                            <button type="button" class="image-upload-btn" id="destino-upload-btn">Subir imagen (opcional)</button>
+                            <input type="file" id="destino-image-input" name="imagen" accept="image/*" hidden>
+                            <div class="image-preview-box" id="destino-preview-box">
+                                <span>Sin imagen seleccionada</span>
+                                <img id="destino-preview" alt="Previsualización de la imagen">
+                            </div>
+                        </div>
+
+                        <div class="map-container" style="margin-top: 20px;">
+                            <iframe id="destino-map-preview" width="100%" height="320" style="border:0;" loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"
+                                src="https://www.google.com/maps?q=Antofagasta,+Chile&output=embed"
+                                title="Vista previa del destino en el mapa"></iframe>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="form-action-btn primary">Guardar destino</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </section>
     </main>
 
@@ -154,6 +226,7 @@
     <div id="toast-container" class="toast-container"></div>
 
     <script src="js/main.js?v=2"></script>
+    <script src="js/destinos.js?v=2"></script>
 
     <footer id="site-footer" class="site-footer">
         <div class="footer-inner">
