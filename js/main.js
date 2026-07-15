@@ -418,6 +418,40 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+    const podcastForm = document.getElementById('podcast-form-prototype');
+    if (podcastForm) {
+        podcastForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const submitBtn = podcastForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            
+            submitBtn.textContent = 'Agregando...';
+            submitBtn.disabled = true;
+
+            fetch(podcastForm.action, {
+                method: podcastForm.method,
+                body: new FormData(podcastForm)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showToast(data.message, 'success');
+                    podcastForm.reset();
+                } else {
+                    showToast(data.message, 'error');
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                showToast('Error de red al agregar podcast.', 'error');
+            })
+            .finally(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+    }
+
     const accordionHeaders = document.querySelectorAll('.accordion-header');
     accordionHeaders.forEach(header => {
         header.addEventListener('click', () => {

@@ -46,6 +46,7 @@
                 <a href="noticias.html" class="news-btn">Volver a Noticias</a>
                 <a href="gestor_noticias.php" class="news-btn" style="background-color: #2563eb; color: #fff;">Gestionar Noticias</a>
                 <a href="gestor_videos.php" class="news-btn" style="background-color: #ef4444; color: #fff;">Gestionar Videos</a>
+                <a href="gestor_podcasts.php" class="news-btn" style="background-color: #10b981; color: #fff;">Gestionar Podcasts</a>
             </div>
             <div class="panel-form-card accordion-card">
                 <h2 class="accordion-header">Crear artículo <span class="accordion-icon">▼</span></h2>
@@ -124,6 +125,23 @@
                         </div>
                         <div class="form-actions">
                             <button type="submit" class="form-action-btn primary">Agregar Video</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="panel-form-card accordion-card" style="margin-top: 2rem;">
+                <h2 class="accordion-header">Agregar Podcast <span class="accordion-icon">▼</span></h2>
+                <div class="accordion-content">
+                    <form class="podcast-form-prototype" id="podcast-form-prototype" action="agregar_podcast.php" method="POST">
+                        <div class="form-grid">
+                            <label class="form-field form-field-full">
+                                <span>Enlace de Spotify</span>
+                                <input type="url" name="spotify_url" placeholder="https://open.spotify.com/episode/..." required>
+                            </label>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="form-action-btn primary">Agregar Podcast</button>
                         </div>
                     </form>
                 </div>
