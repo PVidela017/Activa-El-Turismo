@@ -91,6 +91,16 @@ body {
     align-items: center;
 }
 
+#nav-auth-slot {
+    display: contents;
+}
+
+/* Elementos que solo deben verse si hay una sesión de admin activa.
+   Se revelan vía JS (main.js) una vez confirmada la sesión. */
+.auth-only {
+    display: none;
+}
+
 .nav-link {
     color: var(--header-text);
     text-decoration: none;
@@ -1056,7 +1066,7 @@ body {
 .news-date {
     color: var(--heading-color);
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     white-space: nowrap;
 }
 
@@ -1263,14 +1273,14 @@ body {
 
 .news-card-header {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
+    flex-direction: column;
+    gap: 4px;
 }
 
 .news-card-header h3 {
     margin: 0;
     font-size: 1.3rem;
+    line-height: 1.35;
 }
 
 .news-card-right {

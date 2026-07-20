@@ -73,7 +73,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <a href="podcasts.html" class="nav-link">Podcasts</a>
                 <a href="#" class="nav-link">Eventos</a>
                 <a href="#site-footer" class="nav-link">Contacto</a>
-                <a href="panel.php" class="nav-link">Acceder</a>
+                <span id="nav-auth-slot" class="nav-auth-slot">
+                    <a href="panel.php" class="nav-link">Acceder</a>
+                </span>
                 <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Cambiar a modo oscuro">🌙</button>
             </nav>
         </div>

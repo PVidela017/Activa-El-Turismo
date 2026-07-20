@@ -76,8 +76,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <article class="news-card new-layout">
                                     <div class="news-card-left">
                                         <div class="news-card-header">
-                                            <h3>${noticia.titulo}</h3>
                                             <span class="news-date">${formatDate(noticia.fecha)}</span>
+                                            <h3>${noticia.titulo}</h3>
                                         </div>
                                         ${noticia.subtitulo ? `<p class="news-subtitle">${noticia.subtitulo}</p>` : ''}
                                         <p class="news-author">Por ${noticia.autor}</p>
@@ -463,4 +463,34 @@ document.addEventListener('DOMContentLoaded', function() {
             if (icon) icon.classList.toggle('open');
         });
     });
+
+    // --- Estado de sesión en la barra de navegación ---
+    // Las páginas .html no pueden leer la sesión de PHP directamente, así que
+    // consultamos un endpoint liviano y actualizamos el nav en consecuencia.
+    // Esto corre en TODAS las páginas (incluidas las .php) para que el
+    // comportamiento sea siempre el mismo, sin importar el tipo de archivo.
+    const navAuthSlot = document.getElementById('nav-auth-slot');
+    const authOnlyElements = document.querySelectorAll('.auth-only');
+    if (navAuthSlot || authOnlyElements.length > 0) {
+        fetch('session_check.php')
+            .then(res => res.json())
+            .then(data => {
+                if (data.loggedIn) {
+                    if (navAuthSlot) {
+                        const nombreSeguro = document.createElement('div');
+                        nombreSeguro.textContent = data.nombre || '';
+                        navAuthSlot.innerHTML = `
+                            <a href="panel.php" class="nav-link">Panel de Noticias</a>
+                            <span class="nav-admin-badge">👤 ${nombreSeguro.innerHTML}</span>
+                            <a href="logout.php" class="nav-link nav-logout-btn" title="Cerrar sesión">Cerrar Sesión</a>
+                        `;
+                    }
+                    authOnlyElements.forEach(el => el.classList.remove('auth-only'));
+                }
+                // Si no hay sesión, se deja el enlace "Acceder" y los elementos auth-only ocultos.
+            })
+            .catch(() => {
+                // Ante cualquier error de red, no se rompe la página: se mantiene el estado por defecto.
+            });
+    }
 });
