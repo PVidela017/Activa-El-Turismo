@@ -38,7 +38,6 @@
                 <a href="destinos.html" class="nav-link">Destinos</a>
                 <a href="videos.html" class="nav-link">Videos</a>
                 <a href="podcasts.html" class="nav-link">Podcasts</a>
-                <a href="#" class="nav-link">Eventos</a>
                 <a href="#site-footer" class="nav-link">Contacto</a>
                 <span class="nav-admin-badge">👤 <?= htmlspecialchars($_SESSION['admin_nombre']) ?></span>
                 <a href="logout.php" class="nav-link nav-logout-btn" title="Cerrar sesión">Cerrar Sesión</a>
