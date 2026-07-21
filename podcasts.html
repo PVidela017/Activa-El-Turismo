@@ -24,33 +24,47 @@
                 <a href="podcasts.html" class="nav-link">Podcasts</a>
                 <a href="#" class="nav-link">Eventos</a>
                 <a href="#site-footer" class="nav-link">Contacto</a>
-                <a href="panel.php" class="nav-link">Acceder</a>
                 <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Cambiar a modo oscuro">🌙</button>
             </nav>
         </div>
     </header>
 
     <main>
-        <section class="hero">
-            <h1>Episodios de nuestro Podcast</h1>
-            <p>Escucha nuestras últimas entrevistas y reflexiones directamente desde Spotify.</p>
-        </section>
-
-        <section class="podcasts-container" style="max-width: 1200px; margin: 2rem auto; padding: 0 1rem;">
-            <!-- Main Player Area -->
-            <div id="main-player-container" style="margin-bottom: 2rem; background: var(--card-bg); border-radius: 12px; padding: 1.5rem; box-shadow: var(--shadow);">
-                <div id="main-player-wrapper" style="width: 100%; min-height: 352px; display: flex; justify-content: center; align-items: center; background: #f3f4f6; border-radius: 12px; margin-bottom: 1.5rem;">
-                    <p style="color: #6b7280;">Selecciona un episodio para escucharlo</p>
-                </div>
-                <h2 id="main-player-title" style="margin-bottom: 0.5rem; color: var(--text-color);">Selecciona un episodio</h2>
-                <p id="main-player-desc" style="color: var(--text-muted); line-height: 1.6;"></p>
-                <p id="main-player-meta" style="color: var(--primary-color); font-weight: 500; margin-top: 1rem; font-size: 0.9rem;"></p>
+        <div class="dynamic-bg-wrapper">
+            <div class="bg-slider">
+                <div class="bg-slide active" style="background-image: url('img/estacion baquedano.jpg');"></div>
+                <div class="bg-slide" style="background-image: url('img/mina chuquicamata.JPG');"></div>
+                <div class="bg-slide" style="background-image: url('img/muelle salitrero.jpg');"></div>
+                <div class="bg-slide" style="background-image: url('img/ruinas huancacha.jpg');"></div>
+                <div class="bg-slide" style="background-image: url('img/pictograma.jpg');"></div>
+                <div class="bg-overlay"></div>
             </div>
+            
+            <div class="dynamic-bg-content">
+                <section class="hero">
+                    <h1>Episodios de nuestro Podcast</h1>
+                    <p>Escucha nuestras últimas entrevistas y reflexiones directamente desde Spotify.</p>
+                </section>
+            </div>
+        </div>
 
-            <!-- Episodes List -->
-            <h3 style="margin-bottom: 1rem; color: var(--text-color);">Todos los episodios</h3>
-            <div id="episodes-list" class="episodes-list" style="display: grid; gap: 1rem;">
-                <p style="text-align: center; color: var(--text-muted);">Cargando episodios...</p>
+        <section class="podcasts-section">
+            <div class="podcasts-container" style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
+                <!-- Reproductor -->
+                <div id="main-player-container" style="margin-bottom: 2rem; background: var(--card-bg); border-radius: 12px; padding: 1.5rem; box-shadow: var(--shadow);">
+                    <div id="main-player-wrapper" style="width: 100%; min-height: 352px; display: flex; justify-content: center; align-items: center; background: #f3f4f6; border-radius: 12px; margin-bottom: 1.5rem;">
+                        <p style="color: #6b7280;">Selecciona un episodio para escucharlo</p>
+                    </div>
+                    <h2 id="main-player-title" style="margin-bottom: 0.5rem; color: var(--heading-color); font-size: 1.8rem;">Selecciona un episodio</h2>
+                    <p id="main-player-desc" style="color: var(--text-muted); line-height: 1.6;"></p>
+                    <p id="main-player-meta" style="color: var(--primary-color); font-weight: 500; margin-top: 1rem; font-size: 0.9rem;"></p>
+                </div>
+
+                <!-- Lista de Episodios -->
+                <h3 style="margin-bottom: 1rem; color: var(--heading-color); font-size: 1.4rem;">Todos los episodios</h3>
+                <div id="episodes-list" class="episodes-list" style="display: grid; gap: 1rem;">
+                    <p style="text-align: center; color: var(--text-muted);">Cargando episodios...</p>
+                </div>
             </div>
         </section>
     </main>

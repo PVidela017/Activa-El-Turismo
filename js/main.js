@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     activeContainer.innerHTML = listToRender.length > 0
                         ? listToRender.map((noticia) => {
                             return `
-                                <article class="news-card new-layout">
+                                <article class="news-card new-layout fade-in-up">
                                     <div class="news-card-left">
                                         <div class="news-card-header">
                                             <h3>${noticia.titulo}</h3>
@@ -92,6 +92,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             `;
                         }).join('')
                         : '<div class="news-empty">No se encontraron noticias con esos criterios.</div>';
+
+                    // Animar los elementos renderizados
+                    activeContainer.querySelectorAll('.fade-in-up').forEach(el => window.scrollObserver && window.scrollObserver.observe(el));
                 })
                 .catch(error => {
                     console.error('Error cargando noticias:', error);
@@ -306,55 +309,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    const sliderTrack = document.querySelector('.slider-track');
-    const sliderItems = document.querySelectorAll('.slider-item');
-    const prevBtn = document.querySelector('.slider-prev');
-    const nextBtn = document.querySelector('.slider-next');
-    const indicators = document.querySelectorAll('.indicator');
+    const bgSlides = document.querySelectorAll('.bg-slide');
 
-    if (sliderTrack && sliderItems.length > 0) {
-        let currentSlide = 0;
-        const slideCount = sliderItems.length;
+    if (bgSlides.length > 0) {
+        let currentBgSlide = 0;
+        const slideCount = bgSlides.length;
 
-        function updateSlider() {
-            const offset = -currentSlide * 100;
-            sliderTrack.style.transform = `translateX(${offset}%)`;
-
-            indicators.forEach((indicator, index) => {
-                indicator.classList.toggle('active', index === currentSlide);
-            });
+        function nextBgSlide() {
+            bgSlides[currentBgSlide].classList.remove('active');
+            currentBgSlide = (currentBgSlide + 1) % slideCount;
+            bgSlides[currentBgSlide].classList.add('active');
         }
 
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % slideCount;
-            updateSlider();
-        }
-
-        function prevSlide() {
-            currentSlide = (currentSlide - 1 + slideCount) % slideCount;
-            updateSlider();
-        }
-
-        function goToSlide(index) {
-            currentSlide = index;
-            updateSlider();
-        }
-
-        if (prevBtn) {
-            prevBtn.addEventListener('click', prevSlide);
-        }
-        if (nextBtn) {
-            nextBtn.addEventListener('click', nextSlide);
-        }
-
-        indicators.forEach((indicator) => {
-            indicator.addEventListener('click', (e) => {
-                const slideIndex = parseInt(e.target.dataset.slide, 10);
-                goToSlide(slideIndex);
-            });
-        });
-
-        setInterval(nextSlide, 5000);
+        setInterval(nextBgSlide, 5000);
     }
 
     const videoCardsContainer = document.getElementById('video-cards-container');
@@ -364,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(videos => {
                 if (videos.length > 0) {
                     videoCardsContainer.innerHTML = videos.map(v => `
-                        <article class="episode">
+                        <article class="episode fade-in-up">
                             <div class="episode-left">
                                 <h3 class="episode-title">${v.titulo}</h3>
                                 ${v.descripcion ? `<p class="episode-recap">${v.descripcion}</p>` : ''}
@@ -375,6 +342,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                         </article>
                     `).join('');
+
+                    // Animar los videos renderizados
+                    videoCardsContainer.querySelectorAll('.fade-in-up').forEach(el => window.scrollObserver && window.scrollObserver.observe(el));
                 } else {
                     videoCardsContainer.innerHTML = '<div class="news-empty">No hay videos disponibles.</div>';
                 }
@@ -462,5 +432,25 @@ document.addEventListener('DOMContentLoaded', function() {
             content.classList.toggle('active');
             if (icon) icon.classList.toggle('open');
         });
+    });
+
+    // --- Animaciones Fade In ---
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.15
+    };
+
+    window.scrollObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in-up').forEach(el => {
+        window.scrollObserver.observe(el);
     });
 });

@@ -24,17 +24,32 @@
                 <a href="podcasts.html" class="nav-link">Podcasts</a>
                 <a href="#" class="nav-link">Eventos</a>
                 <a href="#site-footer" class="nav-link">Contacto</a>
-                <a href="panel.php" class="nav-link">Acceder</a>
                 <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Cambiar a modo oscuro">🌙</button>
             </nav>
         </div>
     </header>
 
     <main>
-        <section class="hero">
-            <h1>Revisa nuestos Videos y Entrevistas</h1>
+        <div class="dynamic-bg-wrapper">
+            <div class="bg-slider">
+                <div class="bg-slide active" style="background-image: url('img/estacion baquedano.jpg');"></div>
+                <div class="bg-slide" style="background-image: url('img/mina chuquicamata.JPG');"></div>
+                <div class="bg-slide" style="background-image: url('img/muelle salitrero.jpg');"></div>
+                <div class="bg-slide" style="background-image: url('img/ruinas huancacha.jpg');"></div>
+                <div class="bg-slide" style="background-image: url('img/pictograma.jpg');"></div>
+                <div class="bg-overlay"></div>
+            </div>
+            
+            <div class="dynamic-bg-content">
+                <section class="hero">
+                    <h1>Videos y Entrevistas</h1>
+                    <p>Revisa los videos de nuestros episodios y entrevistas desde nuestro canal de YouTube</p>
+                </section>
+            </div>
+        </div>
 
-            <div class="episodes-list" id="video-cards-container">
+        <section class="videos-section" style="padding: 40px 24px;">
+            <div class="episodes-list" id="video-cards-container" style="max-width: 1200px; margin: 0 auto;">
                 <div class="news-loading" style="text-align: center; padding: 40px; color: var(--text-muted);">Cargando videos...</div>
             </div>
         </section>

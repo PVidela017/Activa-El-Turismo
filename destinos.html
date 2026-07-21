@@ -24,16 +24,30 @@
                 <a href="podcasts.html" class="nav-link">Podcasts</a>
                 <a href="#" class="nav-link">Eventos</a>
                 <a href="#site-footer" class="nav-link">Contacto</a>
-                <a href="panel.php" class="nav-link">Acceder</a>
                 <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Cambiar a modo oscuro">🌙</button>
             </nav>
         </div>
     </header>
 
     <main>
-        <section class="destinos-section" id="destinos">
-            <h2 class="section-title">Descubre Nuestros Destinos</h2>
-            <p class="section-description">Explora en el mapa los lugares que dan vida al patrimonio de la Región de Antofagasta. Haz clic en una tarjeta para ubicarla en el mapa.</p>
+        <div class="dynamic-bg-wrapper">
+            <div class="bg-slider">
+                <div class="bg-slide active" style="background-image: url('img/estacion baquedano.jpg');"></div>
+                <div class="bg-slide" style="background-image: url('img/mina chuquicamata.JPG');"></div>
+                <div class="bg-slide" style="background-image: url('img/muelle salitrero.jpg');"></div>
+                <div class="bg-slide" style="background-image: url('img/ruinas huancacha.jpg');"></div>
+                <div class="bg-slide" style="background-image: url('img/pictograma.jpg');"></div>
+                <div class="bg-overlay"></div>
+            </div>
+            
+            <div class="dynamic-bg-content">
+                <section class="hero">
+                    <h1>Descubre Nuestros Destinos</h1>
+                    <p>Explora en el mapa los lugares que dan vida al patrimonio de la Región de Antofagasta. Haz clic en una tarjeta para ubicarla en el mapa.</p>
+                </section>
+            </div>
+        </div>
+        <section class="destinos-section" id="destinos" style="padding-top: 0;">
 
             <div class="destinos-layout">
                 <div class="destinos-map-col" id="destinos-map-col">

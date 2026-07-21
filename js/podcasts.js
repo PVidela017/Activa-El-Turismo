@@ -25,14 +25,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 
                 html += `
-                    <article class="episode" data-id="${podcast.id}" style="cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; display: flex; flex-direction: column; background: var(--card-bg);">
-                        <h3 style="margin-bottom: 0.5rem; color: var(--primary-color);">${podcast.titulo}</h3>
+                    <article class="episode fade-in-up" data-id="${podcast.id}" style="cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; display: flex; flex-direction: column; background: var(--card-bg);">
+                        <h3 style="margin-bottom: 0.5rem; color: var(--heading-color); font-size: 1.25rem;">${podcast.titulo}</h3>
                         <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.5rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${podcast.descripcion}</p>
                         <p style="font-size: 0.85rem; font-weight: 500;">Duración: ${podcast.duracion} · Fecha: ${formattedDate}</p>
                     </article>
                 `;
             });
             episodesList.innerHTML = html;
+
+            // Animar los episodios generados
+            episodesList.querySelectorAll('.fade-in-up').forEach(el => window.scrollObserver && window.scrollObserver.observe(el));
 
             // Cargar el primer podcast por defecto si existe
             if (data.length > 0) {

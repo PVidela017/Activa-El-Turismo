@@ -80,11 +80,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 cardsContainer.innerHTML = '';
-                destinos.forEach(destino => {
+                destinos.forEach((destino, index) => {
                     const info = tipoInfo[destino.tipo] || tipoInfo.turistico;
                     const card = document.createElement('button');
                     card.type = 'button';
-                    card.className = 'destino-card';
+                    card.className = 'destino-card fade-in-up';
+                    
                     card.innerHTML = `
                         <span class="destino-card-icon">${info.icon}</span>
                         <span class="destino-card-body">
@@ -94,6 +95,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     `;
                     card.addEventListener('click', () => openDetail(destino, card));
                     cardsContainer.appendChild(card);
+
+                    // Animar tarjeta
+                    if (window.scrollObserver) {
+                        window.scrollObserver.observe(card);
+                    }
                 });
             })
             .catch(err => {
